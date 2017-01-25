@@ -1,0 +1,57 @@
+- hosts: all
+
+  sudo: yes
+  sudo_user: root
+#  user: vagrant
+    
+  tasks:
+  
+  - name: install selinux bindings
+    yum: name=libselinux-python state=present 
+     
+  - name: Copy in hosts
+    copy: 
+      src: hosts
+      dest: /etc/hosts
+      owner: root
+      group: root
+    
+#  - name: Copy ifcfg-eth0
+#    copy: 
+#      src: ifcfg-eth0
+#      dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+#      owner: root
+#      group: root
+        
+  - name: Copy contextBroker
+    copy: 
+      src: contextBroker
+      dest: /etc/sysconfig/contextBroker
+      owner: root
+      group: root
+                        
+  - name: Copy mongo.repo
+    copy: 
+      src: mongodb-org.repo
+      dest: /etc/yum.repos.d/mongodb-org.repo
+      owner: root
+      group: root
+
+  - name: install mongo-10gen-server
+    yum: name=mongo-10gen-server
+
+  - name: install mongo-10gen
+    yum: name=mongo-10gen
+     
+  - name: Copy fiware.repo
+    copy: 
+      src: fiware.repo
+      dest: /etc/yum.repos.d/fiware.repo
+      owner: root
+      group: root
+     
+  - name: FIWARE | Installing FIWARE
+    yum:
+      name: contextBroker
+      state: latest
+ 
